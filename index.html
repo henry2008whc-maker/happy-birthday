@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一个神秘的小礼物</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* 密码页面 */
+        .login-box {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 400px;
+            animation: fadeIn 1s ease;
+        }
+
+        .login-box h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #ff4081;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            border: 2px solid #ff4081;
+            border-radius: 12px;
+            outline: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #e63070;
+        }
+
+        /* 生日祝福页面 */
+        .card {
+            background: white;
+            padding: 50px 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            max-width: 500px;
+            animation: fadeIn 1.2s ease;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .name {
+            font-size: 32px;
+            color: #ff4081;
+            margin-bottom: 20px;
+        }
+
+        .cake {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+
+        .text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin: 8px 0;
+        }
+
+        .wish {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff4081;
+            margin: 25px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 密码 -->
+    <div class="login-box" id="login">
+        <h2>一个神秘的小礼物</h2>
+        <input type="password" id="pwd" placeholder="输入生日日月开启">
+        <button onclick="check()">打开</button>
+    </div>
+
+    <!-- 生日 -->
+    <div class="card" id="birthday">
+        <div class="name">李子涵生日快乐!(^O^)y🎂🎂🎂</div>
+        <div class="cake">🎂✨</div>
+        
+        <p class="text">愿你永远开心快乐，眼里有光!</p>
+        <p class="text">颜值一路飙升，越来越漂亮!</p>
+        <p class="text">学业一路开挂，成绩节节高升，考上dream school!!!</p>
+        
+        <div class="wish">
+          活成自己最喜欢的样子ദ്ദി˶>ω<)✧
+        <div>
+          开心快乐每一天哦٩(◦`꒳´◦)۶
+        </div>
+        <div>
+          -小汪
+        </div>
+    </div>
+
+    <script>
+        function check() {
+            let pwd = document.getElementById('pwd').value;
+            if (pwd === '312' || pwd==='3/12' || pwd==='2008/3/12' || pwd==='3/12/2008' || pwd==='12') {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('birthday').style.display = 'block';
+                document.title = '生日快乐！';
+            } else {
+                alert('密码不正确哦～是你生日日期的数字哦');
+            }
+        }
+    </script>
+
+</body>
+</html>
+
