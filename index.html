@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>一个神秘的小礼物</title>
     <style>
         * {
@@ -13,7 +13,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -21,33 +21,51 @@
             text-align: center;
             color: #333;
             padding: 20px;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* 密码页面 */
-        .login-box {
-            background: white;
-            padding: 60px 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            max-width: 400px;
+        .login-box,
+        .message-card,
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 55px 35px;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            max-width: 560px;
+            width: 100%;
+            position: relative;
+            z-index: 5;
             animation: fadeIn 1s ease;
         }
 
-        .login-box h2 {
-            font-size: 24px;
-            margin-bottom: 30px;
+        .message-card,
+        .card {
+            display: none;
+        }
+
+        .login-box h2,
+        .message-title {
+            font-size: 28px;
+            margin-bottom: 24px;
             color: #ff4081;
+        }
+
+        .sub {
+            font-size: 15px;
+            color: #888;
+            margin-bottom: 20px;
         }
 
         input {
             width: 100%;
             padding: 14px 18px;
             font-size: 16px;
-            border: 2px solid #ff4081;
+            border: 2px solid #ff77aa;
             border-radius: 12px;
             outline: none;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         button {
@@ -57,99 +75,364 @@
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.25s;
         }
 
         button:hover {
             background: #e63070;
+            transform: translateY(-2px);
         }
 
-        /* 生日祝福页面 */
-        .card {
-            background: white;
-            padding: 50px 35px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            max-width: 500px;
-            animation: fadeIn 1.2s ease;
+        .name {
+            font-size: 34px;
+            color: #ff4081;
+            margin-bottom: 16px;
+            font-weight: bold;
+            line-height: 1.45;
+            white-space: pre-line;
+        }
+
+        .cake {
+            font-size: 62px;
+            margin: 14px 0 22px;
+        }
+
+        .typing-box {
+            min-height: 220px;
+            text-align: center;
+            background: #fff8fb;
+            border-radius: 16px;
+            padding: 22px 20px;
+            line-height: 1.95;
+            font-size: 20px;
+            color: #555;
+            box-shadow: inset 0 0 0 1px rgba(255, 64, 129, 0.08);
+            white-space: pre-wrap;
+        }
+
+        .typing-box.center {
+            text-align: left;
+            min-height: 260px;
+        }
+
+        .cursor {
+            display: inline-block;
+            color: #ff4081;
+            animation: blink 0.8s infinite;
+            font-weight: bold;
+        }
+
+        .signature {
+            margin-top: 18px;
+            font-size: 18px;
+            color: #ff4081;
+            font-weight: bold;
+        }
+
+        .next-btn {
+            margin-top: 20px;
             display: none;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(25px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .name {
-            font-size: 32px;
-            color: #ff4081;
-            margin-bottom: 20px;
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
-        .cake {
-            font-size: 60px;
-            margin: 20px 0;
+        /* 气球 */
+        .balloons {
+            display: none;
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
         }
 
-        .text {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #555;
-            margin: 8px 0;
+        .balloon {
+            position: absolute;
+            bottom: -140px;
+            width: 70px;
+            height: 90px;
+            border-radius: 50% 50% 45% 45%;
+            opacity: 0.9;
+            animation: floatUp linear infinite;
         }
 
-        .wish {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff4081;
-            margin: 25px 0;
-            line-height: 1.6;
+        .balloon::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 90px;
+            background: rgba(120, 120, 120, 0.6);
+            left: 50%;
+            top: 88px;
+            transform: translateX(-50%);
+        }
+
+        .balloon::after {
+            content: "";
+            position: absolute;
+            width: 14px;
+            height: 10px;
+            background: inherit;
+            left: 50%;
+            bottom: -2px;
+            transform: translateX(-50%);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+        }
+
+        .b1 { left: 6%; background: #ff6fa5; animation-duration: 12s; animation-delay: 0s; }
+        .b2 { left: 18%; background: #ffd166; animation-duration: 15s; animation-delay: 2s; }
+        .b3 { left: 30%; background: #7bdff2; animation-duration: 13s; animation-delay: 4s; }
+        .b4 { left: 44%; background: #b8f2e6; animation-duration: 16s; animation-delay: 1s; }
+        .b5 { left: 58%; background: #cdb4db; animation-duration: 14s; animation-delay: 3s; }
+        .b6 { left: 72%; background: #f9c74f; animation-duration: 17s; animation-delay: 5s; }
+        .b7 { left: 84%; background: #90dbf4; animation-duration: 13s; animation-delay: 2.5s; }
+        .b8 { left: 92%; background: #ff99c8; animation-duration: 18s; animation-delay: 4.5s; }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.95;
+            }
+            50% {
+                transform: translateY(-55vh) translateX(12px) rotate(4deg);
+            }
+            100% {
+                transform: translateY(-120vh) translateX(-10px) rotate(-6deg);
+                opacity: 0;
+            }
+        }
+
+        /* 彩带 */
+        .confetti-container {
+            display: none;
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -20px;
+            width: 10px;
+            height: 18px;
+            opacity: 0.9;
+            animation: fall linear infinite;
+        }
+
+        .c1 { left: 5%; background: #ff4d6d; animation-duration: 5s; animation-delay: 0s; }
+        .c2 { left: 12%; background: #ffd166; animation-duration: 6s; animation-delay: 1s; }
+        .c3 { left: 20%; background: #06d6a0; animation-duration: 5.5s; animation-delay: 2s; }
+        .c4 { left: 28%; background: #118ab2; animation-duration: 6.5s; animation-delay: 0.5s; }
+        .c5 { left: 36%; background: #ef476f; animation-duration: 4.8s; animation-delay: 1.2s; }
+        .c6 { left: 45%; background: #8338ec; animation-duration: 5.7s; animation-delay: 2.3s; }
+        .c7 { left: 54%; background: #ffbe0b; animation-duration: 6.1s; animation-delay: 0.8s; }
+        .c8 { left: 63%; background: #3a86ff; animation-duration: 5.2s; animation-delay: 1.6s; }
+        .c9 { left: 72%; background: #fb5607; animation-duration: 6.3s; animation-delay: 2.1s; }
+        .c10 { left: 81%; background: #ff006e; animation-duration: 4.9s; animation-delay: 1.4s; }
+        .c11 { left: 89%; background: #8ac926; animation-duration: 5.8s; animation-delay: 0.4s; }
+        .c12 { left: 96%; background: #ff99c8; animation-duration: 6.4s; animation-delay: 1.8s; }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0.9;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .login-box,
+            .message-card,
+            .card {
+                padding: 42px 22px;
+            }
+
+            .name {
+                font-size: 28px;
+            }
+
+            .typing-box {
+                font-size: 18px;
+            }
+
+            .cake {
+                font-size: 54px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- 密码 -->
+    <!-- 第一页：密码 -->
     <div class="login-box" id="login">
         <h2>一个神秘的小礼物</h2>
-        <input type="password" id="pwd" placeholder="输入生日日月开启">
+        <div class="sub">输入生日日月开启</div>
+        <input type="password" id="pwd" placeholder="例如：3/12" />
         <button onclick="check()">打开</button>
     </div>
 
-    <!-- 生日 -->
+    <!-- 第二页：过渡页 -->
+    <div class="message-card" id="messagePage">
+        <div class="message-title">给子涵的一段话</div>
+        <div class="typing-box center"><span id="messageTyping"></span><span class="cursor" id="messageCursor">|</span></div>
+        <button class="next-btn" id="nextBtn" onclick="showBirthday()">继续打开</button>
+    </div>
+
+    <!-- 第三页：正式生日页 -->
     <div class="card" id="birthday">
-        <div class="name">李子涵生日快乐!(^O^)y🎂🎂🎂</div>
+        <div class="name">李子涵
+18岁生日快乐</div>
         <div class="cake">🎂✨</div>
-        
-        <p class="text">愿你永远开心快乐，眼里有光!</p>
-        <p class="text">颜值一路飙升，越来越漂亮!</p>
-        <p class="text">学业一路开挂，成绩节节高升，考上dream school!!!</p>
-        
-        <div class="wish">
-          活成自己最喜欢的样子ദ്ദി˶>ω<)✧
-        <div>
-          开心快乐每一天哦٩(◦`꒳´◦)۶
-        </div>
-        <div>
-          -小汪
-        </div>
+        <div class="typing-box"><span id="typingText"></span><span class="cursor" id="cursor">|</span></div>
+        <div class="signature">- 小汪</div>
+    </div>
+
+    <!-- 气球 -->
+    <div class="balloons" id="balloons">
+        <div class="balloon b1"></div>
+        <div class="balloon b2"></div>
+        <div class="balloon b3"></div>
+        <div class="balloon b4"></div>
+        <div class="balloon b5"></div>
+        <div class="balloon b6"></div>
+        <div class="balloon b7"></div>
+        <div class="balloon b8"></div>
+    </div>
+
+    <!-- 彩带 -->
+    <div class="confetti-container" id="confettiContainer">
+        <div class="confetti c1"></div>
+        <div class="confetti c2"></div>
+        <div class="confetti c3"></div>
+        <div class="confetti c4"></div>
+        <div class="confetti c5"></div>
+        <div class="confetti c6"></div>
+        <div class="confetti c7"></div>
+        <div class="confetti c8"></div>
+        <div class="confetti c9"></div>
+        <div class="confetti c10"></div>
+        <div class="confetti c11"></div>
+        <div class="confetti c12"></div>
     </div>
 
     <script>
+        const messageLines = [
+            "时光荏苒，岁月如梭，时间过得真快啊......",
+            "当年你7年级当我小组组长和同桌的日子至今还历历在目。这是我最欢乐最难忘的日子。",
+            "那真的是我最欢乐最难忘的日子。",
+            "转眼间桌就开始过18岁生日了。（/｡＼)",
+            "希望这个website你会喜欢哦",
+            "（不喜欢也不要说，有bug也不要说，搞这个网页老费劲了<(｀^´)>）。"
+        ];
+
+        const birthdayLines = [
+            "愿你永远开心快乐，眼里有光！",
+            "颜值一路飙升，越来越漂亮！",
+            "学业一路开挂，成绩节节高升，考上dream school!!!",
+            "",
+            "活成自己最喜欢的样子ദ്ദി˶>ω<)✧",
+            "开心快乐每一天哦٩(◦`꒳´◦)۶"
+        ];
+
         function check() {
-            let pwd = document.getElementById('pwd').value;
-            if (pwd === '312' || pwd==='3/12' || pwd==='2008/3/12' || pwd==='3/12/2008' || pwd==='12') {
-                document.getElementById('login').style.display = 'none';
-                document.getElementById('birthday').style.display = 'block';
-                document.title = '生日快乐！';
+            const pwd = document.getElementById("pwd").value.trim();
+            if (pwd === "312" || pwd === "3/12" || pwd === "2008/3/12" || pwd === "3/12/2008" || pwd === "12") {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("messagePage").style.display = "block";
+                document.title = "给子涵的一段话";
+                typeLines(
+                    messageLines,
+                    "messageTyping",
+                    "messageCursor",
+                    85,
+                    800,
+                    function () {
+                        document.getElementById("nextBtn").style.display = "block";
+                    }
+                );
             } else {
-                alert('密码不正确哦～是你生日日期的数字哦');
+                alert("密码不正确哦～是你生日日期的数字哦");
             }
         }
-    </script>
 
+        function showBirthday() {
+            document.getElementById("messagePage").style.display = "none";
+            document.getElementById("birthday").style.display = "block";
+            document.getElementById("balloons").style.display = "block";
+            document.getElementById("confettiContainer").style.display = "block";
+            document.title = "生日快乐！";
+
+            typeLines(
+                birthdayLines,
+                "typingText",
+                "cursor",
+                90,
+                700,
+                function () {}
+            );
+        }
+
+        function typeLines(lines, targetId, cursorId, charSpeed, lineDelay, callback) {
+            const target = document.getElementById(targetId);
+            const cursor = document.getElementById(cursorId);
+            target.textContent = "";
+
+            let lineIndex = 0;
+            let charIndex = 0;
+
+            function typeNextChar() {
+                if (lineIndex < lines.length) {
+                    const currentLine = lines[lineIndex];
+
+                    if (charIndex < currentLine.length) {
+                        target.textContent += currentLine.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeNextChar, charSpeed);
+                    } else {
+                        target.textContent += "\n";
+                        lineIndex++;
+                        charIndex = 0;
+                        setTimeout(typeNextChar, lineDelay);
+                    }
+                } else {
+                    if (cursor) {
+                        cursor.style.display = "none";
+                    }
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+
+            typeNextChar();
+        }
+
+        document.getElementById("pwd").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                check();
+            }
+        });
+    </script>
 </body>
 </html>
-
